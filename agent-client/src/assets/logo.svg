@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="hatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- 小狗头部 - 白色为主 -->
+  <ellipse cx="100" cy="125" rx="60" ry="55" fill="#FFFFFF" filter="url(#shadow)" />
+  
+  <!-- 左耳朵 - 浅棕色 -->
+  <ellipse cx="50" cy="90" rx="20" ry="35" fill="#F5DEB3" transform="rotate(-25 50 90)" />
+  <ellipse cx="50" cy="90" rx="14" ry="26" fill="#FAEBD7" transform="rotate(-25 50 90)" />
+  
+  <!-- 右耳朵 - 浅棕色 -->
+  <ellipse cx="150" cy="90" rx="20" ry="35" fill="#F5DEB3" transform="rotate(25 150 90)" />
+  <ellipse cx="150" cy="90" rx="14" ry="26" fill="#FAEBD7" transform="rotate(25 150 90)" />
+  
+  <!-- 脸颊红晕 - 更可爱 -->
+  <circle cx="65" cy="135" r="10" fill="#FFB6C1" opacity="0.5" />
+  <circle cx="135" cy="135" r="10" fill="#FFB6C1" opacity="0.5" />
+  
+  <!-- 眼睛 - 更大更圆 -->
+  <circle cx="78" cy="120" r="10" fill="#333" />
+  <circle cx="122" cy="120" r="10" fill="#333" />
+  <circle cx="81" cy="117" r="4" fill="white" />
+  <circle cx="125" cy="117" r="4" fill="white" />
+  <circle cx="76" cy="122" r="2" fill="white" opacity="0.6" />
+  <circle cx="120" cy="122" r="2" fill="white" opacity="0.6" />
+  
+  <!-- 鼻子 - 心形更可爱 -->
+  <path d="M 95 135 Q 100 130 105 135 Q 100 142 95 135" fill="#4A4A4A" />
+  
+  <!-- 嘴巴 - 微笑 -->
+  <path d="M 92 145 Q 100 152 108 145" stroke="#4A4A4A" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  
+  <!-- 小舌头 -->
+  <ellipse cx="100" cy="152" rx="5" ry="6" fill="#FF6B9D" />
+  
+  <!-- 安全帽 - 金黄色 -->
+  <path d="M 40 90 Q 40 45 100 45 Q 160 45 160 90" fill="url(#hatGrad)" stroke="#E69500" stroke-width="2.5" />
+  <rect x="35" y="86" width="130" height="14" rx="7" fill="#FFA500" stroke="#E69500" stroke-width="2" />
+  
+  <!-- 安全帽反光条 -->
+  <rect x="65" y="60" width="70" height="5" rx="2.5" fill="white" opacity="0.7" />
+  
+  <!-- 安全帽徽章 - 工程标志 -->
+  <circle cx="100" cy="68" r="10" fill="#409eff" stroke="white" stroke-width="2" />
+  <path d="M 95 68 L 99 72 L 106 64" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- 前爪 - 增加可爱度 -->
+  <ellipse cx="75" cy="175" rx="15" ry="12" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1.5" />
+  <ellipse cx="125" cy="175" rx="15" ry="12" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="1.5" />
+</svg>

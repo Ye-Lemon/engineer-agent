@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: .
+    container_name: eng-ai-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - eng-ai-network
+    restart: unless-stopped
+
+  backend:
+    image: eng-ai-backend:latest
+    container_name: eng-ai-backend
+    # 这里应该指向实际的backend服务配置
+
+networks:
+  eng-ai-network:
+    external: true
