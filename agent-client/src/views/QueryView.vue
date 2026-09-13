@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ChatDotRound } from '@element-plus/icons-vue'
 import { queryKnowledge } from '@/api/query'
@@ -117,6 +117,14 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  const pendingPrompt = sessionStorage.getItem('pendingPrompt')
+  if (!pendingPrompt) return
+  sessionStorage.removeItem('pendingPrompt')
+  question.value = pendingPrompt
+  handleSubmit()
+})
 </script>
 
 <style scoped lang="scss">
@@ -227,4 +235,39 @@ const handleSubmit = async () => {
     line-height: 1.6;
   }
 }
+</style>
+
+<style scoped lang="scss">
+/* Refined knowledge-base workspace surface */
+.query-view { max-width: 1180px; margin: 0 auto; padding: 34px 30px 56px; }
+.query-view :deep(.el-card) { border: 1px solid #e8e4f0; border-radius: 18px; box-shadow: 0 14px 44px rgba(47, 35, 83, .08); overflow: hidden; }
+.query-view :deep(.el-card__header) { padding: 26px 30px; border-bottom: 1px solid #f0edf5; background: linear-gradient(180deg, #fff, #fcfbff); }
+.card-header h2 { font-size: 25px; letter-spacing: -.01em; color: #241f35; }
+.card-header p { color: #817b91; }
+.input-section { padding: 4px 2px 0; }
+.input-section :deep(.el-textarea__inner) { min-height: 138px !important; padding: 18px 20px; border: 1px solid #e3deed; border-radius: 14px; background: #fcfbff; box-shadow: none; font-size: 15px; line-height: 1.7; transition: border-color .2s, box-shadow .2s; }
+.input-section :deep(.el-textarea__inner):focus { border-color: var(--brand-500); box-shadow: 0 0 0 4px rgba(117,87,217,.1); background: #fff; }
+.input-actions { padding-top: 14px; }
+.input-actions :deep(.el-select .el-input__wrapper) { border-radius: 10px; box-shadow: 0 0 0 1px #e3deed inset; }
+.input-actions :deep(.el-button) { min-width: 104px; height: 38px; border-radius: 10px; box-shadow: 0 7px 16px rgba(101,70,202,.2); }
+.result-section { margin-top: 28px; }
+.result-section :deep(.el-divider) { margin: 24px 0; border-color: #f0edf5; }
+.answer-box { padding: 22px 24px; border: 1px solid #e6e0f4; border-left: 4px solid var(--brand-500); border-radius: 15px; background: linear-gradient(135deg,#fbfaff,#fff); box-shadow: 0 10px 26px rgba(71,51,117,.06); }
+.answer-header { min-height: 30px; }
+.answer-header span { color: #2a2440; font-size: 15px; }
+.answer-content { color: #484158; font-size: 15px; line-height: 1.85; }
+.answer-content :deep(p) { margin: 10px 0; }
+.answer-content :deep(code) { color: #5a40b3; background: #f0ebff; border-radius: 6px; padding: 3px 7px; }
+.answer-content :deep(pre) { border-radius: 10px; background: #211d31; }
+.sources-box { margin-top: 26px; padding: 20px 22px; border: 1px solid #e9e5ef; border-radius: 15px; background: #fff; }
+.sources-box h4 { display: flex; align-items: center; gap: 8px; color: #2a2440; font-size: 15px; }
+.sources-box :deep(.el-collapse) { border-top: 0; border-bottom: 0; }
+.sources-box :deep(.el-collapse-item) { border-bottom: 1px solid #f0edf5; }
+.sources-box :deep(.el-collapse-item__header) { min-height: 52px; border-bottom: 0; color: #3e3850; }
+.sources-box :deep(.el-collapse-item__wrap) { border-bottom: 0; background: #faf9fd; border-radius: 10px; }
+.source-title { gap: 10px; padding-right: 8px; }
+.source-title .el-tag { border-radius: 6px; }
+.source-name { font-size: 14px; }
+.source-content { margin: 0 10px 12px; padding: 12px 14px; border-radius: 9px; color: #676174; background: #f5f3f9; line-height: 1.7; }
+@media (max-width: 720px) { .query-view { padding: 22px 16px 36px; } .query-view :deep(.el-card__header) { padding: 20px; } .input-actions { justify-content: space-between; } }
 </style>

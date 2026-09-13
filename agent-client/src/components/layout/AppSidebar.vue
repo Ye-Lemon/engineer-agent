@@ -2,7 +2,7 @@
   <div class="app-sidebar">
     <div class="sidebar-header" :class="{ compact: collapsed }">
       <img src="@/assets/logo.svg" alt="Logo" class="logo" />
-      <span v-if="!collapsed" class="app-title">工程智能助手</span>
+      <span v-if="!collapsed" class="app-title">小P</span>
     </div>
     <div v-if="!collapsed" class="group-label">工作空间</div>
     <el-menu :default-active="activeMenu" :collapse="collapsed" router class="sidebar-menu">
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowRight, ChatDotRound, CollectionTag, Connection, Document, Folder, HomeFilled, MoreFilled, Setting, Switch, SwitchButton, Upload } from '@element-plus/icons-vue'
+import { ArrowRight, CollectionTag, Connection, Document, Folder, HomeFilled, MoreFilled, Setting, Switch, SwitchButton } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import AccountSettingsDialog from '@/components/account/AccountSettingsDialog.vue'
 import ApiServiceDialog from '@/components/account/ApiServiceDialog.vue'
@@ -61,9 +61,7 @@ const initial = computed(() => username.value.charAt(0).toUpperCase())
 const activeMenu = computed(() => route.path)
 const items = [
   { path: '/', label: '工作台', icon: HomeFilled },
-  { path: '/upload', label: '文档上传', icon: Upload },
   { path: '/files', label: '知识空间', icon: Folder },
-  { path: '/query', label: '智能问答', icon: ChatDotRound },
   { path: '/report', label: '报告生成', icon: Document },
 ]
 function openSettings() { accountMenuVisible.value = false; settingsVisible.value = true }
@@ -81,14 +79,14 @@ function logoutFromMenu() { accountMenuVisible.value = false; handleLogout() }
 
 <style scoped lang="scss">
 .app-sidebar { height: 100%; display: flex; flex-direction: column; background: #faf9fc; }
-.sidebar-header { height: 98px; padding: 0 14px; display: flex; align-items: center; gap: 8px; }
+.sidebar-header { height: 88px; padding: 0 16px; display: flex; align-items: center; gap: 10px; }
 .sidebar-header.compact { justify-content: center; padding: 0; }
 .logo { width: 76px; height: 76px; flex: 0 0 76px; object-fit: contain; animation: logo-float 4s ease-in-out infinite; }
 .sidebar-header.compact .logo { width: 46px; height: 46px; flex-basis: 46px; }
-.app-title { color: var(--ink-900); font-size: 17px; font-weight: 700; white-space: nowrap; }
+.app-title { color: var(--ink-900); font-size: 18px; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
 .group-label { padding: 12px 18px 8px; color: #9a94a5; font-size: 13px; font-weight: 500; }
 .sidebar-menu { flex: 1; padding: 5px 10px; border-right: 0; background: transparent; }
-:deep(.el-menu-item) { position: relative; height: 50px; margin-bottom: 6px; border-radius: 7px; color: var(--ink-600); font-size: 16px; transition: color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+:deep(.el-menu-item) { position: relative; height: 46px; margin-bottom: 5px; border-radius: 12px; color: var(--ink-600); font-size: 14px; transition: color .2s ease, background-color .2s ease, transform .2s ease, box-shadow .2s ease; }
 :deep(.el-menu-item .el-icon) { width: 24px; margin-right: 12px; font-size: 22px; transition: transform .22s ease, color .22s ease; }
 :deep(.el-menu--collapse .el-menu-item .el-icon) { margin-right: 0; }
 :deep(.el-menu-item::before) { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 0 3px 3px 0; background: var(--brand-600); opacity: 0; transform: scaleY(.35); transition: opacity .2s ease, transform .2s ease; }
@@ -97,7 +95,7 @@ function logoutFromMenu() { accountMenuVisible.value = false; handleLogout() }
 :deep(.el-menu-item.is-active) { color: var(--brand-700); background: var(--brand-100); font-weight: 600; box-shadow: 0 5px 16px rgba(101, 70, 202, .08); }
 :deep(.el-menu-item.is-active::before) { opacity: 1; transform: scaleY(1); }
 :deep(.el-menu-item.is-active .el-icon) { color: var(--brand-600); animation: icon-arrive .35s ease both; }
-.account-trigger { width: calc(100% - 20px); min-height: 54px; margin: 0 10px 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; border-radius: 8px; color: var(--ink-600); background: #f2f3f5; cursor: pointer; text-align: left; }
+.account-trigger { width: calc(100% - 20px); min-height: 54px; margin: 0 10px 10px; padding: 8px 10px; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; border-radius: 12px; color: var(--ink-600); background: #f2f3f5; cursor: pointer; text-align: left; }
 .account-trigger:hover, .account-trigger.active { border-color: var(--brand-500); box-shadow: 0 0 0 2px var(--brand-100); }
 .account-trigger.compact { width: 48px; justify-content: center; margin-inline: 8px; padding: 7px; }
 .account-trigger :deep(.el-avatar) { flex: 0 0 auto; color: var(--brand-700); background: var(--brand-100); font-weight: 700; }

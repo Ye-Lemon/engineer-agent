@@ -288,3 +288,14 @@ const saveToFiles = async () => {
   justify-content: center;
 }
 </style>
+
+<style scoped lang="scss">
+.report-view { max-width: 1240px; padding: 32px 30px 56px; }
+.report-view :deep(.el-card) { border-radius: 16px; overflow: hidden; }
+.report-view :deep(.el-card__header) { padding: 24px 28px; background: linear-gradient(180deg,#fff,#fcfbff); }
+.report-view :deep(.el-form-item) { margin-bottom: 20px; }
+.report-view :deep(.el-button) { border-radius: 9px; }
+.report-content { border: 1px solid #ece8f2; border-radius: 14px; box-shadow: 0 8px 24px rgba(52,40,83,.04); }
+.report-actions { flex-wrap: wrap; }
+@media (max-width: 720px) { .report-view { padding: 20px 16px 36px; } }
+</style>

@@ -22,6 +22,16 @@ export function useAuth() {
     }
   }
 
+  async function handlePhoneLogin(phone: string, code: string) {
+    try {
+      await authStore.phoneLogin(phone, code)
+      ElMessage.success('登录成功')
+      router.push('/')
+    } catch (error: any) {
+      ElMessage.error(error.message || '验证码错误或已过期')
+    }
+  }
+
   /**
    * 用户注册
    */
@@ -53,6 +63,7 @@ export function useAuth() {
   return {
     authStore,
     handleLogin,
+    handlePhoneLogin,
     handleRegister,
     handleLogout,
   }

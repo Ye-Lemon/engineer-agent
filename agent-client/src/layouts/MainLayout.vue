@@ -31,8 +31,12 @@ const drawerVisible = ref(false)
 .sidebar-container { width: 232px; flex: 0 0 auto; border-right: 1px solid var(--line); transition: width .25s ease; }
 .sidebar-container.collapsed { width: 64px; }
 .main-container { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
-.content-area { flex: 1; padding: 0; overflow-y: auto; background: #fff; }
-.fade-enter-active, .fade-leave-active { transition: opacity .18s ease; }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
+.content-area { flex: 1; padding: 0; overflow-y: auto; background: #f8f7fb; }
+.fade-enter-active, .fade-leave-active { transition: opacity .2s ease, transform .2s ease; }
+.fade-enter-from { opacity: 0; transform: translateY(6px); }
+.fade-leave-to { opacity: 0; transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter-active, .fade-leave-active { transition: none; }
+}
 :deep(.el-drawer__body) { padding: 0; }
 </style>

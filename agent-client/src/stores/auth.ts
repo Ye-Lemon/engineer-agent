@@ -28,6 +28,22 @@ export const useAuthStore = defineStore('auth', () => {
     return response
   }
 
+  async function phoneLogin(phone: string, code: string) {
+    const response = await authApi.phoneLogin({ phone, code, purpose: 'login' })
+    accessToken.value = response.token
+    user.value = response.userinfo
+    saveToken(response.token)
+    saveUserInfo(response.userinfo)
+    return response
+  }
+
+  function setSession(response: { token: string; userinfo: User }) {
+    accessToken.value = response.token
+    user.value = response.userinfo
+    saveToken(response.token)
+    saveUserInfo(response.userinfo)
+  }
+
   async function register(userInfo: {
     username: string
     email: string
@@ -74,6 +90,8 @@ export const useAuthStore = defineStore('auth', () => {
     accessToken,
     isAuthenticated,
     login,
+    phoneLogin,
+    setSession,
     register,
     refreshUser,
     updateUser,

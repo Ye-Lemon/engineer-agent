@@ -18,13 +18,14 @@ export async function uploadDocument(file: File, collectionName?: string): Promi
   if (collectionName) formData.append('collection_name', collectionName)
 
   const response = await request.post<UploadResponse | ApiResponse<UploadResponse>>('/upload/', formData, {
+    // Override the Axios instance's JSON default so FastAPI can parse UploadFile.
     headers: { 'Content-Type': 'multipart/form-data' },
   })
   return unwrap(response as UploadResponse | ApiResponse<UploadResponse>)
 }
 
 export async function getTaskStatus(taskId: string): Promise<TaskStatusResponse> {
-  const response = await request.get<TaskStatusResponse | ApiResponse<TaskStatusResponse>>(`/upload/task/${taskId}`)
+  const response = await request.get<TaskStatusResponse | ApiResponse<TaskStatusResponse>>(`/tasks/${taskId}`)
   return unwrap(response as TaskStatusResponse | ApiResponse<TaskStatusResponse>)
 }
 
