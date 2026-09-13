@@ -1,22 +1,15 @@
-from typing import Optional
-
 from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from config.db_session import get_db
-from crud.user import get_user_by_token
-from db.user import User
+from crud.user import get_user_info
 
 
-async def get_current_user(
-    authorization: Optional[str] = Header(default=None),
-    db: AsyncSession = Depends(get_db),
-) -> User:
-    scheme, _, token = (authorization or "").partition(" ")
-    if scheme.lower() != "bearer" or not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication")
-
-    user = await get_user_by_token(db, token)
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired or invalid")
-    return user
+def auth_user_info(
+        authorization: str = Header(...,alias='Authorization'),
+        db: AsyncSession = Depends(get_db)
+):
+    token = authorization.split(" ")[1]
+    result = get_user_info(db,token)
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="令牌过期或不存在")
+    return result

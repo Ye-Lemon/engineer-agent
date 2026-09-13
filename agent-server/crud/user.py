@@ -1,28 +1,39 @@
 from datetime import datetime, timedelta
-import secrets
 from typing import Optional
-
+from fastapi import HTTPException
+from jwt import ExpiredSignatureError, InvalidTokenError
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from config.db_session import async_engine
+from config.jwt import settings
 from db.user import Base, TokenUser, User
 from schema.user import RegisterRequest, UpdateUserRequest
 from utils.security import hash_password, verify_password
+import jwt
+
+
+async def get_user_info(db: AsyncSession, token: str):
+    stmt = db.execute(select(TokenUser).where(TokenUser.token == token))
+    token_record = stmt.scalar_one_or_none()
+    if token_record is None or token_record.expires_at < datetime.utcnow():
+        return None
+    query = select(User).where(User.user_id == TokenUser.user_id)
+    result = await db.execute(query)
+    return result.scalar_one_or_none()
 
 
 async def create_tables() -> None:
-    async with async_engine.begin() as connection:
-        await connection.run_sync(Base.metadata.create_all)
+    async with async_engine.begin() as conn:
+        return await conn.run_sync(Base.metadata.create_all)
 
 
-async def get_user_by_username(db: AsyncSession, username: str) -> Optional[User]:
+async def get_user_by_username(db: AsyncSession, username: str):
     result = await db.execute(select(User).where(User.username == username))
     return result.scalar_one_or_none()
 
 
-async def get_user_by_email(db: AsyncSession, email: str) -> Optional[User]:
-    result = await db.execute(select(User).where(User.email == email))
+async def get_user_by_phone(db: AsyncSession, phone: str):
+    result = await db.execute(select(User).where(User.phone == phone))
     return result.scalar_one_or_none()
 
 
@@ -46,17 +57,36 @@ async def authenticate_user(db: AsyncSession, username: str, password: str) -> O
 
 
 async def create_access_token(db: AsyncSession, user_id: int) -> str:
-    token = secrets.token_urlsafe(32)
-    expires_at = datetime.utcnow() + timedelta(days=7)
-    result = await db.execute(select(TokenUser).where(TokenUser.user_id == user_id))
-    token_record = result.scalar_one_or_none()
-    if token_record is None:
-        db.add(TokenUser(user_id=user_id, token=token, expires_at=expires_at))
+    expires_at = datetime.now() + timedelta(hours=settings.JWT_EXPIRATION_DAYS)
+    payload = {"exp": expires_at,"sub":str(user_id)}
+    jwt_token = jwt.encode(
+        payload=payload,
+        key=settings.JWT_SECRET_KEY,
+        algorithm=settings.JWT_ALGORITHM
+        )
+    stmt = select(TokenUser).where(TokenUser.token == jwt_token)
+    result = await db.execute(stmt)
+    token_info = result.scalar_one_or_none()
+    if token_info:
+        token_info.token = jwt_token
+        token_info.expire_time = expires_at
     else:
-        token_record.token = token
-        token_record.expires_at = expires_at
-    await db.commit()
-    return token
+        token_info = TokenUser(user_id=user_id, token=jwt_token, expires_at=expires_at)
+        db.add(token_info)
+        await db.commit()
+    return jwt_token
+
+async def decode_jwt_token(token: str):
+    try:
+        return jwt.decode(
+            token,
+            settings.JWT_SECRET_KEY,
+            algorithms=settings.JWT_ALGORITHM,
+        )
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="token 已过期")
+    except InvalidTokenError:
+        raise HTTPException(status_code=401, detail="无效 token")
 
 
 async def get_user_by_token(db: AsyncSession, token: str) -> Optional[User]:

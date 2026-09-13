@@ -19,7 +19,7 @@ defineEmits<{ 'menu-toggle': [] }>()
 </script>
 
 <style scoped lang="scss">
-.app-header { height: 52px; padding: 0 22px; flex: 0 0 auto; border-bottom: 1px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: space-between; }
+.app-header { height: 58px; padding: 0 26px; flex: 0 0 auto; border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .94); display: flex; align-items: center; justify-content: space-between; }
 .header-left { display: flex; align-items: center; gap: 10px; }
-h2 { margin: 0; font-size: 14px; font-weight: 600; }
+h2 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: .01em; }
 </style>

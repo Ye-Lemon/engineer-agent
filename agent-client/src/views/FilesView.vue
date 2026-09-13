@@ -141,3 +141,12 @@ onMounted(() => {
   }
 }
 </style>
+
+<style scoped lang="scss">
+.files-view { max-width: 1240px; padding: 32px 30px 56px; }
+.files-view :deep(.el-card) { border-radius: 16px; overflow: hidden; }
+.files-view :deep(.el-card__header) { padding: 24px 28px; background: linear-gradient(180deg,#fff,#fcfbff); }
+.files-view :deep(.el-table th.el-table__cell) { background: #faf9fd; color: #686277; font-weight: 600; }
+.files-view :deep(.el-table td.el-table__cell), .files-view :deep(.el-table th.el-table__cell) { padding: 15px 0; }
+@media (max-width: 720px) { .files-view { padding: 20px 16px 36px; } }
+</style>

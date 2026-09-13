@@ -1,117 +1,78 @@
 <template>
-  <div class="register-view">
-    <!-- 左侧品牌区域 -->
-    <div class="left-panel">
-      <!-- 浮动气泡 -->
-      <div class="bubbles">
-        <div class="bubble" v-for="i in 15" :key="i" :style="getBubbleStyle(i)"></div>
-      </div>
-      
-      <div class="brand-content">
-        <img src="@/assets/logo.svg" alt="Logo" class="brand-logo" />
-        <h1 class="brand-title">
-          <span class="title-main">工程AI智能体</span>
-          <span class="title-name">小向</span>
-        </h1>
-        <p class="brand-description">您的智能化工程管理助手</p>
-        <div class="brand-features">
-          <div class="feature-item">
-            <el-icon><Document /></el-icon>
-            <span>智能文档处理</span>
-          </div>
-          <div class="feature-item">
-            <el-icon><Search /></el-icon>
-            <span>RAG 知识检索</span>
-          </div>
-          <div class="feature-item">
-            <el-icon><DocumentCopy /></el-icon>
-            <span>自动生成报告</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="register-page">
+    <section class="brand-panel">
+      <img src="@/assets/logo.svg" alt="小P" class="logo" />
+      <h1>小P</h1>
+      <p>工程 AI 智能助手</p>
+    </section>
 
-    <!-- 右侧注册表单区域 -->
-    <div class="right-panel">
-      <div class="register-container">
-        <div class="register-header">
-          <h2>创建账号</h2>
-          <p class="subtitle">加入我们，开启智能工程管理之旅</p>
-        </div>
+    <main class="form-panel">
+      <div class="auth-box">
+        <h2>创建小P账号</h2>
+        <p class="hint">注册后即可使用智能文档处理和工程知识问答</p>
 
-        <el-form :model="form" :rules="rules" ref="formRef" @submit.prevent="handleRegisterSubmit" class="register-form">
+        <el-form
+          ref="formRef"
+          :model="form"
+          :rules="rules"
+          @submit.prevent="submitRegister"
+        >
           <el-form-item prop="username">
-            <el-input
-              v-model="form.username"
-              placeholder="用户名"
-              prefix-icon="User"
-              size="large"
-            />
+            <el-input v-model="form.username" size="large" placeholder="用户名" autocomplete="username" />
           </el-form-item>
-
           <el-form-item prop="email">
-            <el-input
-              v-model="form.email"
-              placeholder="邮箱"
-              prefix-icon="Message"
-              size="large"
-            />
+            <el-input v-model="form.email" size="large" placeholder="邮箱" autocomplete="email" />
           </el-form-item>
-
           <el-form-item prop="password">
             <el-input
               v-model="form.password"
-              type="password"
-              placeholder="密码"
-              prefix-icon="Lock"
               size="large"
+              type="password"
               show-password
+              placeholder="密码（8-20个字符）"
+              autocomplete="new-password"
             />
           </el-form-item>
-
           <el-form-item prop="confirmPassword">
             <el-input
               v-model="form.confirmPassword"
-              type="password"
-              placeholder="确认密码"
-              prefix-icon="Lock"
               size="large"
+              type="password"
               show-password
-              @keyup.enter="handleRegisterSubmit"
+              placeholder="确认密码"
+              autocomplete="new-password"
+              @keyup.enter="submitRegister"
             />
           </el-form-item>
 
-          <el-form-item>
-            <el-button
-              type="primary"
-              size="large"
-              native-type="submit"
-              :loading="loading"
-              class="register-btn"
-            >
-              {{ loading ? '注册中...' : '注册' }}
-            </el-button>
-          </el-form-item>
-
-          <div class="footer-links">
-            <span>已有账号？</span>
-            <router-link to="/login">立即登录</router-link>
-          </div>
+          <el-button
+            type="primary"
+            native-type="submit"
+            size="large"
+            :loading="loading"
+            class="submit"
+          >
+            {{ loading ? '注册中…' : '注册' }}
+          </el-button>
         </el-form>
+
+        <p class="switch-auth">
+          已有账号？
+          <router-link to="/login">返回登录</router-link>
+        </p>
+        <p class="footer">注册即代表同意服务条款和隐私政策</p>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { ElForm } from 'element-plus'
-import { Document, Search, DocumentCopy } from '@element-plus/icons-vue'
+import { reactive, ref } from 'vue'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useAuth } from '@/composables/useAuth'
 
 const { handleRegister } = useAuth()
-
-const formRef = ref<InstanceType<typeof ElForm>>()
+const formRef = ref<FormInstance>()
 const loading = ref(false)
 
 const form = reactive({
@@ -121,33 +82,9 @@ const form = reactive({
   confirmPassword: '',
 })
 
-// 生成气泡样式
-const getBubbleStyle = (_index: number) => {
-  const size = Math.random() * 60 + 20 // 20-80px
-  const left = Math.random() * 100 // 0-100%
-  const top = Math.random() * 100 // 0-100%
-  const delay = Math.random() * 10 // 0-10s
-  const duration = Math.random() * 15 + 20 // 20-35s
-  const opacity = Math.random() * 0.3 + 0.1 // 0.1-0.4
-  const driftX = (Math.random() - 0.5) * 2 // -1 to 1
-  const driftY = (Math.random() - 0.5) * 2 // -1 to 1
-  
-  return {
-    width: `${size}px`,
-    height: `${size}px`,
-    left: `${left}%`,
-    top: `${top}%`,
-    animationDelay: `${delay}s`,
-    animationDuration: `${duration}s`,
-    opacity: opacity,
-    '--drift-x': driftX,
-    '--drift-y': driftY,
-  }
-}
-
-const validatePass = (_rule: any, value: string, callback: any) => {
-  if (value === '') {
-    callback(new Error('请再次输入密码'))
+const validateConfirmPassword = (_rule: unknown, value: string, callback: (error?: Error) => void) => {
+  if (!value) {
+    callback(new Error('请确认密码'))
   } else if (value !== form.password) {
     callback(new Error('两次输入的密码不一致'))
   } else {
@@ -155,10 +92,10 @@ const validatePass = (_rule: any, value: string, callback: any) => {
   }
 }
 
-const rules = {
+const rules: FormRules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 6, max: 20, message: '用户名长度在6-20个字符', trigger: 'blur' },
+    { min: 6, max: 20, message: '用户名长度为 6-20 个字符', trigger: 'blur' },
   ],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
@@ -166,319 +103,45 @@ const rules = {
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 8, max: 20, message: '密码长度在8-20个字符', trigger: 'blur' },
+    { min: 8, max: 20, message: '密码长度为 8-20 个字符', trigger: 'blur' },
   ],
-  confirmPassword: [
-    { required: true, validator: validatePass, trigger: 'blur' },
-  ],
+  confirmPassword: [{ validator: validateConfirmPassword, trigger: 'blur' }],
 }
 
-const handleRegisterSubmit = async () => {
-  if (!formRef.value) return
+async function submitRegister() {
+  if (!formRef.value || loading.value) return
 
-  await formRef.value.validate(async (valid) => {
-    if (!valid) return
+  const valid = await formRef.value.validate().catch(() => false)
+  if (!valid) return
 
-    loading.value = true
-    try {
-      await handleRegister(form.username, form.email, form.password, form.confirmPassword)
-    } finally {
-      loading.value = false
-    }
-  })
+  loading.value = true
+  try {
+    await handleRegister(form.username.trim(), form.email.trim(), form.password, form.confirmPassword)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
-<style scoped lang="scss">
-.register-view {
-  min-height: 100vh;
-  display: flex;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  overflow: hidden;
-}
-
-// 左侧面板
-.left-panel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
-    opacity: 0.3;
-  }
-}
-
-// 气泡容器
-.bubbles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-// 单个气泡
-.bubble {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
-  box-shadow: 
-    inset 0 0 20px rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.2);
-  animation: bubbleFloat linear infinite;
-  backdrop-filter: blur(2px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-@keyframes bubbleFloat {
-  0% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  25% {
-    transform: translate(calc(var(--drift-x, 0) * 80px), calc(var(--drift-y, 0) * 80px)) rotate(90deg) scale(1.05);
-  }
-  50% {
-    transform: translate(calc(var(--drift-x, 0) * 150px), calc(var(--drift-y, 0) * 150px)) rotate(180deg) scale(1);
-  }
-  75% {
-    transform: translate(calc(var(--drift-x, 0) * 80px), calc(var(--drift-y, 0) * 80px)) rotate(270deg) scale(0.95);
-  }
-  100% {
-    transform: translate(0, 0) rotate(360deg) scale(1);
-  }
-}
-
-.brand-content {
-  text-align: center;
-  color: white;
-  z-index: 1;
-  max-width: 500px;
-}
-
-.brand-logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 30px;
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.2));
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-.brand-title {
-  margin: 0 0 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-
-  .title-main {
-    font-size: 36px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .title-name {
-    font-size: 56px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    filter: drop-shadow(0 4px 8px rgba(168, 237, 234, 0.4));
-    animation: glow 3s ease-in-out infinite;
-    letter-spacing: 8px;
-  }
-}
-
-@keyframes glow {
-  0%, 100% {
-    filter: drop-shadow(0 4px 8px rgba(168, 237, 234, 0.4));
-  }
-  50% {
-    filter: drop-shadow(0 6px 16px rgba(210, 153, 194, 0.6));
-  }
-}
-
-.brand-description {
-  font-size: 16px;
-  margin: 0 0 50px;
-  opacity: 0.95;
-  letter-spacing: 2px;
-  font-weight: 300;
-}
-
-.brand-features {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-}
-
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateX(10px);
-  }
-
-  .el-icon {
-    font-size: 20px;
-  }
-}
-
-// 右侧面板
-.right-panel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  background: white;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, transparent 100%);
-  }
-}
-
-.register-container {
-  width: 100%;
-  max-width: 420px;
-  z-index: 1;
-}
-
-.register-header {
-  margin-bottom: 40px;
-
-  h2 {
-    font-size: 32px;
-    font-weight: 700;
-    margin: 0 0 10px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .subtitle {
-    font-size: 15px;
-    color: #909399;
-    margin: 0;
-  }
-}
-
-.register-form {
-  :deep(.el-form-item) {
-    margin-bottom: 20px;
-  }
-
-  :deep(.el-input__wrapper) {
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
-    transition: all 0.3s ease;
-
-    &:hover {
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-    }
-
-    &.is-focus {
-      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.25);
-    }
-  }
-}
-
-.register-btn {
-  width: 100%;
-  height: 48px;
-  font-size: 16px;
-  font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-}
-
-.footer-links {
-  text-align: center;
-  margin-top: 24px;
-  font-size: 14px;
-  color: #606266;
-
-  a {
-    color: #667eea;
-    text-decoration: none;
-    margin-left: 8px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-
-    &:hover {
-      color: #764ba2;
-      text-decoration: underline;
-    }
-  }
-}
-
-// 响应式设计
-@media (max-width: 768px) {
-  .register-view {
-    flex-direction: column;
-  }
-
-  .left-panel {
-    display: none;
-  }
-
-  .right-panel {
-    flex: 1;
-    padding: 30px 20px;
-  }
-}
+<style scoped>
+.register-page { min-height: 100vh; display: flex; background: #f6f8fb; color: #1f2937; }
+.brand-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.brand-panel .logo { width: 92px; height: 92px; margin-bottom: 22px; animation: logoFloat 4s ease-in-out infinite; }
+.brand-panel h1 { margin: 0; font-size: 38px; font-weight: 700; }
+.brand-panel p { margin-top: 12px; color: rgba(255, 255, 255, 0.9); }
+.form-panel { flex: 1; display: flex; justify-content: center; align-items: center; padding: 48px; background: white; }
+.auth-box { width: min(410px, 100%); animation: authEnter .45s cubic-bezier(.22, 1, .36, 1) both; }
+.auth-box h2 { margin: 0; font-size: 30px; line-height: 1.25; color: #667eea; letter-spacing: 0; }
+.hint { color: #7b8794; font-size: 14px; line-height: 1.6; margin: 10px 0 28px; }
+.submit { width: 100%; height: 44px; margin-top: 8px; border: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.submit:hover { filter: brightness(1.04); box-shadow: 0 8px 20px rgba(102, 126, 234, .22); }
+.submit:active { transform: translateY(1px); }
+.switch-auth { color: #7b8794; text-align: center; font-size: 14px; margin: 22px 0 0; }
+.switch-auth a { color: #667eea; font-weight: 600; text-decoration: none; }
+.switch-auth a:hover { color: #764ba2; text-decoration: underline; }
+.footer { color: #9aa4b2; text-align: center; font-size: 12px; margin-top: 24px; }
+@keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+@keyframes authEnter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .brand-panel .logo, .auth-box { animation: none; } }
+@media (max-width: 760px) { .brand-panel { display: none; } .form-panel { min-height: 100vh; padding: 28px 20px; } .auth-box { width: min(410px, 100%); } }
 </style>

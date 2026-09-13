@@ -26,6 +26,8 @@ onMounted(() => {
   --ink-600: #686477;
   --line: #e9e6ef;
   --surface: #ffffff;
+  --font-sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --shadow-soft: 0 12px 34px rgba(71, 51, 117, .08);
 }
 
 * {
@@ -35,9 +37,10 @@ onMounted(() => {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--ink-900);
@@ -49,5 +52,15 @@ body {
 }
 
 button, input, textarea { font: inherit; }
+h1, h2, h3, p { overflow-wrap: anywhere; }
 ::selection { color: #fff; background: var(--brand-500); }
+
+/* Shared product shell: calm surfaces, consistent radius and readable controls. */
+.content-area > * { min-height: 100%; }
+.content-area .el-card { border-radius: 16px; border-color: #e9e5ef; box-shadow: 0 12px 34px rgba(52, 40, 83, .06); }
+.content-area .el-card__header { border-bottom-color: #f0edf5; }
+.content-area .el-button { border-radius: 9px; }
+.content-area .el-input__wrapper, .content-area .el-select .el-input__wrapper { border-radius: 9px; }
+.content-area .el-table { border-radius: 10px; overflow: hidden; }
+.content-area .el-empty { padding: 46px 0; }
 </style>
