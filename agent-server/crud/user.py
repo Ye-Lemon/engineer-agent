@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config.db_session import async_engine
 from config.jwt import settings
 from db.user import Base, TokenUser, User
-from schema.user import RegisterRequest, UpdateUserRequest
+from schemas.user import RegisterRequest, UpdateUserRequest
 from utils.security import hash_password, verify_password
 import jwt
 
