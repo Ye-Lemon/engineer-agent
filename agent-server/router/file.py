@@ -40,7 +40,7 @@ async def upload_file(file: UploadFile = File(...)):
         save_path.unlink(missing_ok=True)
         raise HTTPException(status_code=400, detail="文件大小超过限制")
 
-    task = create_task(filename=filename, disk_name=disk_name, size=size)
+    task = await create_task(filename=filename, disk_name=disk_name, size=size)
     return response.success_response(message="上传成功", data={"task_id": task["task_id"],
         "status": "completed", "filename": filename})
 
