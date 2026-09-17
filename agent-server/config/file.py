@@ -8,4 +8,4 @@ UPLOAD_DIR = BASE_DIR / "uploads"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 MAX_FILE_SIZE = 100 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "docx", "doc", "pdf", "xls", "xlsx", "txt"}
+ALLOWED_EXTENSIONS = {"docx", "doc", "pdf", "xls", "xlsx", "ppt", "pptx", "txt", "md", "markdown", "csv", "tsv", "json", "html", "htm", "xhtml"}

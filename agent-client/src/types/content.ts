@@ -37,8 +37,10 @@ export interface TaskStatusResponse {
 
 export interface QueryRequest {
   question: string
+  session_id?: string
   top_k?: number
   collection_name?: string
+  model?: string
 }
 
 export interface SourceDocument {
@@ -50,8 +52,10 @@ export interface SourceDocument {
 
 export interface QueryResponse {
   answer: string
+  reasoning?: string
   sources: SourceDocument[]
   processing_time_ms: number
+  model?: string
 }
 
 export interface ReportRequest {

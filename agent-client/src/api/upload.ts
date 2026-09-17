@@ -7,19 +7,23 @@ import type {
   TaskStatusResponse,
   UploadResponse,
 } from '@/types'
+import type { AxiosProgressEvent } from 'axios'
 
 function unwrap<T>(response: T | ApiResponse<T>): T {
   return (response as ApiResponse<T>).data ?? (response as T)
 }
 
-export async function uploadDocument(file: File, collectionName?: string): Promise<UploadResponse> {
+export async function uploadDocument(file: File, collectionName?: string, onProgress?: (progress: number) => void): Promise<UploadResponse> {
   const formData = new FormData()
   formData.append('file', file)
   if (collectionName) formData.append('collection_name', collectionName)
 
-  const response = await request.post<UploadResponse | ApiResponse<UploadResponse>>('/upload/', formData, {
+  const response = await request.post<UploadResponse | ApiResponse<UploadResponse>>('/doc/upload', formData, {
     // Override the Axios instance's JSON default so FastAPI can parse UploadFile.
     headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (event: AxiosProgressEvent) => {
+      if (event.total) onProgress?.(Math.round((event.loaded / event.total) * 100))
+    },
   })
   return unwrap(response as UploadResponse | ApiResponse<UploadResponse>)
 }

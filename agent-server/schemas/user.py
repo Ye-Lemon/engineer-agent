@@ -44,3 +44,9 @@ class UpdateUserRequest(BaseModel):
 class UserUpdatePassword(BaseModel):
     old_password: str = Field(...,min_length=8,max_length=12,alias="oldpassword",description='旧密码')
     new_password: str = Field(...,min_length=8,max_length=12,alias="newpassword",description='新密码')
+
+class UserInfo(BaseModel):
+    id: str
+    name: str
+    email: str | None = Field(None, description="邮箱")
+    token: str

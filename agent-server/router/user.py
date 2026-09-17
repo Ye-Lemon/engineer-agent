@@ -11,10 +11,10 @@ from crud.user import (
     update_user,
 )
 from db.user import User
-from schema.user import AuthResponse, LoginRequest, RegisterRequest, UpdateUserRequest, UserResponse
+from schemas.user import AuthResponse, LoginRequest, RegisterRequest, UpdateUserRequest, UserResponse
 from utils.auth import auth_user_info
 from utils.response import success_response
-import shutil
+
 router = APIRouter(prefix="/api/v1/auth", tags=["用户系统"])
 
 

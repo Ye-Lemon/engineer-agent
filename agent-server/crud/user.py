@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config.db_session import async_engine
 from config.jwt import settings
 from db.user import Base, TokenUser, User
-from schema.user import RegisterRequest, UpdateUserRequest
+from schemas.user import RegisterRequest, UpdateUserRequest
 from utils.security import hash_password, verify_password
 import jwt
 
@@ -31,6 +31,9 @@ async def get_user_by_username(db: AsyncSession, username: str):
     result = await db.execute(select(User).where(User.username == username))
     return result.scalar_one_or_none()
 
+async def get_user_by_userID(db: AsyncSession, user_id: int):
+    result = await db.execute(select(User).where(User.username == user_id))
+    return result.scalar_one_or_none()
 
 async def get_user_by_phone(db: AsyncSession, phone: str):
     result = await db.execute(select(User).where(User.phone == phone))
