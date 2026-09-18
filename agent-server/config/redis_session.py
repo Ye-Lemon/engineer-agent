@@ -1,9 +1,13 @@
-import redis.asyncio as redis
-import dotenv
 import os
+from pathlib import Path
 
-dotenv.load_dotenv()
-REDIS_URL=os.getenv("REDIS_URL")
+import redis.asyncio as redis
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
 redis_client: redis.Redis = redis.from_url(
     REDIS_URL,
