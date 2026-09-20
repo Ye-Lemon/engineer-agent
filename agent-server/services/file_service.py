@@ -1,10 +1,8 @@
 from pathlib import Path
 import re
 from typing import Iterable
-
 import aiofiles
 from fastapi import HTTPException, UploadFile, status
-
 from schemas.content import FileInfo
 
 UPLOAD_ROOT = Path(__file__).resolve().parents[1] / "data" / "uploads"
